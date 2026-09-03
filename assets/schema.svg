@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" width="420" height="300" role="img" aria-label="Schema orbital">
+<rect width="420" height="300" fill="#0E1626"/>
+<g fill="none" stroke-linecap="round">
+<circle cx="176.4" cy="156" r="48" stroke="#79C0F0" stroke-width="1.6" opacity="0.85"/>
+<circle cx="176.4" cy="156" r="102" stroke="#79C0F0" stroke-width="1.6" opacity="0.6"/>
+<path d="M 108.427 124.304 A 75 75 0 1 1 219.418 217.436" stroke="#E9B168" stroke-width="2.2" stroke-dasharray="3 9"/>
+<path d="M 33.6 258 L 386.4 258" stroke="#A9B6CA" stroke-width="1" opacity="0.4"/>
+</g>
+<circle cx="176.4" cy="156" r="7" fill="#79C0F0"/>
+<circle cx="278.4" cy="156" r="4" fill="#E9B168"/>
+</svg>

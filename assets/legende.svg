@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 74" width="300" height="74" role="img" aria-label="Convention de trace">
+<g fill="none" stroke-width="4" stroke-linecap="round">
+<path d="M 12 24 L 118 24" stroke="#79C0F0"/>
+<path d="M 12 54 L 118 54" stroke="#E9B168" stroke-dasharray="3 10"/>
+</g></svg>

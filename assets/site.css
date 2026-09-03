@@ -1,0 +1,392 @@
+@charset "utf-8";
+
+/* Deep Orbit Network — feuille de style unique.
+   Chapitre 12 du cahier des charges : fonds bleu nuit ou noir, lignes
+   orbitales, schemas techniques, typographie propre.
+
+   Chaque valeur de TEXTE ci-dessous a ete calculee avant d'etre ecrite,
+   puis REMESUREE dans un navigateur reel (voir README, « Contrastes
+   mesures »). Lire une feuille de style ne dit jamais quelle regle a
+   gagne ; seule la mesure du rendu le dit. */
+
+@font-face{font-family:Inter;font-style:normal;font-weight:100 900;
+ font-display:swap;src:url(fonts/inter-latin.woff2) format("woff2");
+ unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,
+ U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,
+ U+FEFF,U+FFFD}
+@font-face{font-family:Inter;font-style:normal;font-weight:100 900;
+ font-display:swap;src:url(fonts/inter-latin-ext.woff2) format("woff2");
+ unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,
+ U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
+:root{
+ --nuit:#070B14;
+ --panneau:#0E1626;
+ --ardoise:#1B2739;      /* separateurs, non textuels */
+ /* Bordure des CONTROLES (champs, boutons, bascule de langue). Elle ne
+    porte pas de texte, mais elle dessine la limite d'un composant
+    d'interface, et cette limite doit atteindre 3:1 — sinon un champ de
+    saisie n'a pas de bord visible pour qui distingue mal les contrastes.
+    La premiere valeur essayee, #33445E, mesurait 2,00:1 : je l'avais
+    calculee de tete au lieu de la calculer tout court.
+    3,32:1 sur nuit — 3,05:1 sur panneau. */
+ --bord:#406886;
+ --clair:#EDF2F9;        /* 17,50:1 sur nuit — texte principal */
+ --doux:#A9B6CA;         /*  9,59:1 sur nuit — texte secondaire */
+ --accent:#79C0F0;       /*  9,94:1 sur nuit — le trait MESURE */
+ --ambre:#E9B168;        /* 10,27:1 sur nuit — le trait INFERE */
+ --papier:#F4F7FB;
+ --encre:#101927;        /* 16,42:1 sur papier */
+ --encre-doux:#42506A;   /*  7,55:1 sur papier */
+ --accent-sombre:#1D5C8A;/*  6,62:1 sur papier */
+ --ambre-sombre:#7A4E12; /*  6,68:1 sur papier */
+ --rouge:#FF9C8F;        /*  9,75:1 sur nuit — erreurs de formulaire */
+ --entete:64px;
+ --large:1180px;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--nuit);color:var(--clair);
+ font:400 17px/1.62 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",
+ Roboto,Arial,sans-serif;
+ -webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* Le fond orbital. Tres faible opacite : c'est une texture, pas un motif.
+   Il est pose en pseudo-element pour que son opacite n'affecte jamais le
+   texte, ce qu'un `background` avec `opacity` sur le corps ferait. */
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+ background:url(tuile.svg) repeat;background-size:180px 180px;
+ opacity:.09;pointer-events:none}
+
+img{max-width:100%;height:auto}
+a{color:var(--accent)}
+a:hover{color:var(--clair)}
+h1,h2,h3{line-height:1.22;letter-spacing:-.012em;margin:0 0 .5em}
+h1{font-size:2.15rem;font-weight:700}
+h2{font-size:1.5rem;font-weight:650;margin-top:0}
+h3{font-size:1.06rem;font-weight:650}
+p{margin:0 0 1em}
+ul,ol{margin:0 0 1em;padding:0}
+
+.dans{max-width:var(--large);margin:0 auto;padding:0 26px}
+main section{margin:52px 0}
+main section:first-child{margin-top:0}
+
+/* focus : un contour epais et clair, jamais supprime. */
+a:focus-visible,button:focus-visible,input:focus-visible,
+select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+ outline:3px solid var(--ambre);outline-offset:2px;border-radius:3px}
+
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+ overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+.evitement{position:absolute;left:-9999px;top:0;z-index:60;
+ background:var(--ambre);color:#241300;padding:12px 18px;font-weight:650}
+.evitement:focus{left:0}
+
+/* ----------------------------------------------------------- bandeaux */
+.bandeau{background:#132038;color:var(--clair);
+ border-bottom:1px solid var(--ardoise);font-size:.9rem}
+.bandeau .dans{padding-top:10px;padding-bottom:10px}
+.bandeau p{margin:0}
+
+.util{background:var(--panneau);border-bottom:1px solid var(--ardoise);
+ font-size:.86rem}
+.util .dans{display:flex;gap:16px;align-items:center;
+ justify-content:space-between;padding-top:9px;padding-bottom:9px}
+.convention{margin:0;color:var(--doux)}
+.langue{color:var(--clair);border:1px solid var(--bord);border-radius:99px;
+ padding:5px 14px;text-decoration:none;white-space:nowrap}
+.langue:hover{border-color:var(--accent)}
+
+/* -------------------------------------------------------------- entete */
+.entete{position:sticky;top:0;z-index:40;background:rgba(7,11,20,.94);
+ backdrop-filter:blur(8px);border-bottom:1px solid var(--ardoise)}
+.entete .dans{display:flex;align-items:center;gap:20px;
+ min-height:var(--entete)}
+.marque{display:flex;align-items:center;gap:11px;text-decoration:none;
+ color:var(--clair);flex:0 0 auto}
+.marque-t{display:flex;flex-direction:column;line-height:1.12}
+.marque-n{font-weight:700;font-size:1.02rem;letter-spacing:-.01em}
+.prov{font-size:.63rem;letter-spacing:.11em;text-transform:uppercase;
+ color:var(--ambre);font-weight:600}
+.nav{margin-left:auto}
+.nav ul{display:flex;gap:19px;list-style:none;margin:0;flex-wrap:wrap}
+.nav a{color:var(--doux);text-decoration:none;font-size:.94rem;
+ padding:5px 0;border-bottom:2px solid transparent}
+.nav a:hover{color:var(--clair)}
+.nav a[aria-current=page]{color:var(--accent);border-bottom-color:
+ var(--accent)}
+.burger{display:none}
+
+/* ---------------------------------------------------------------- fil */
+.fil{border-bottom:1px solid var(--ardoise);font-size:.86rem}
+.fil .dans{padding-top:11px;padding-bottom:11px}
+.fil a{color:var(--doux)}
+.fil span{color:var(--doux)}
+
+/* -------------------------------------------------------------- heros */
+.heros{background:var(--panneau);border-bottom:1px solid var(--ardoise);
+ position:relative;overflow:hidden}
+.heros .dans{padding-top:52px;padding-bottom:52px;position:relative}
+.heros-g{display:grid;gap:34px;grid-template-columns:minmax(0,1fr);
+ align-items:center}
+.heros-m{width:72px;height:72px;margin-bottom:16px}
+.heros h1{font-size:2.4rem}
+.heros-i{display:flex;justify-content:center}
+.heros-i img{width:100%;max-width:420px;height:auto;
+ border:1px solid var(--ardoise);border-radius:6px}
+
+.titre{background:var(--panneau);border-bottom:1px solid var(--ardoise)}
+.titre .dans{padding-top:42px;padding-bottom:42px}
+.chapo{font-size:1.1rem;color:var(--doux);max-width:44em;margin:0}
+.intro{font-size:1.06rem;max-width:46em}
+.note{color:var(--doux);font-size:.95rem;max-width:46em}
+
+/* ------------------------------------------------------------- grilles */
+.g3{list-style:none;display:grid;gap:20px;
+ grid-template-columns:minmax(0,1fr)}
+.carte{background:var(--panneau);border:1px solid var(--ardoise);
+ border-radius:7px;padding:20px 22px}
+.carte h3{margin-bottom:.35em}
+.carte h3 a{text-decoration:none}
+.carte h3 a:hover{text-decoration:underline}
+.carte p{margin:0;color:var(--doux);font-size:.97rem}
+
+.categories{list-style:none;display:grid;gap:10px;
+ grid-template-columns:minmax(0,1fr)}
+.categories li{background:var(--panneau);border:1px solid var(--ardoise);
+ border-left:3px solid var(--accent);border-radius:5px;padding:13px 17px}
+
+.regles{list-style:none;display:grid;gap:14px}
+.regles li{padding-left:22px;position:relative;max-width:52em;
+ color:var(--clair)}
+.regles li::before{content:"";position:absolute;left:0;top:.66em;
+ width:11px;height:2px;background:var(--accent)}
+
+.liste{list-style:none}
+
+/* -------------------------------------------------------- statuts ch.11 */
+/* L'etiquette est du TEXTE dans un cadre, jamais une couleur seule.
+   Elle reste lisible sans la feuille de style, a l'impression, et a voix
+   haute — les trois cas ou l'affirmation voyage loin de son contexte. */
+.statut{display:inline-block;font-size:.7rem;font-weight:700;
+ letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;
+ border-radius:99px;border:1px solid;white-space:nowrap}
+.statut-fait{color:var(--accent);border-color:rgba(121,192,240,.5);
+ background:rgba(121,192,240,.09)}
+.statut-hypothese{color:var(--ambre);border-color:rgba(233,177,104,.5);
+ background:rgba(233,177,104,.09)}
+.statut-opinion{color:var(--doux);border-color:var(--bord);
+ background:rgba(169,182,202,.08)}
+.statut-speculation{color:var(--doux);border-color:var(--bord);
+ background:rgba(169,182,202,.08);border-style:dashed}
+
+.sujet{border-top:1px solid var(--ardoise);padding-top:26px;
+ margin-bottom:34px}
+.item{display:grid;gap:6px 16px;grid-template-columns:minmax(0,1fr);
+ margin-bottom:18px;max-width:56em}
+.item p{margin:0;color:var(--clair)}
+
+.statuts{list-style:none;display:grid;gap:16px}
+.statuts li{display:grid;gap:6px 16px;
+ grid-template-columns:minmax(0,1fr);max-width:52em}
+.statuts p{margin:0;color:var(--doux)}
+
+.convention-bloc{display:grid;gap:24px;
+ grid-template-columns:minmax(0,1fr);align-items:center}
+.convention-bloc img{border:1px solid var(--ardoise);border-radius:6px;
+ background:var(--panneau);padding:10px}
+.conv-t{font-weight:650;color:var(--accent);font-size:1.06rem}
+
+/* ------------------------------------------------------------- encarts */
+.encart{margin:0}
+.encart .dans{padding-top:20px;padding-bottom:20px}
+.encart p{margin:0;max-width:54em}
+.encart-avert{background:var(--panneau);
+ border-top:1px solid var(--ardoise);
+ border-bottom:1px solid var(--ardoise)}
+.encart-avert p{color:var(--clair);
+ border-left:3px solid var(--ambre);padding-left:16px}
+
+/* Le bloc d'avertissement de la page investissement. Il est en TETE de
+   page : un avertissement place apres le contenu qu'il corrige n'est pas
+   lu par ceux qu'il devrait proteger. */
+.avert-bloc{}
+.avert-l{list-style:none;display:grid;gap:13px;
+ border:1px solid var(--bord);border-radius:7px;padding:22px 24px;
+ background:var(--panneau)}
+.avert-l li{padding-left:24px;position:relative;max-width:54em}
+.avert-l li::before{content:"";position:absolute;left:0;top:.58em;
+ width:12px;height:12px;border:2px solid var(--ambre);border-radius:50%}
+
+/* ------------------------------------------------------------ attentes */
+.attentes{list-style:none;display:grid;gap:16px}
+.attente{background:var(--panneau);border:1px solid var(--ardoise);
+ border-radius:7px;padding:18px 22px}
+.attente h3{margin:9px 0 .35em}
+.attente p{margin:0;color:var(--doux)}
+/* La specificite est explicite : `.attente p` (0,2,0) doit ceder devant
+   `.att` sur la couleur, sinon le badge redevient gris dans les cartes.
+   C'est arrive sur un chantier precedent — d'ou la liste d'elements. */
+p.att,span.att,li.att,strong.att,.att{display:inline-block;
+ font-size:.68rem;font-weight:700;letter-spacing:.11em;
+ text-transform:uppercase;color:var(--ambre);
+ border:1px solid rgba(233,177,104,.5);background:rgba(233,177,104,.09);
+ border-radius:99px;padding:4px 11px}
+
+.indicateurs{list-style:none;display:grid;gap:11px}
+.indicateurs li{display:flex;gap:16px;align-items:center;
+ justify-content:space-between;flex-wrap:wrap;
+ background:var(--panneau);border:1px solid var(--ardoise);
+ border-radius:6px;padding:13px 18px}
+.ind-t{max-width:44em}
+
+/* --------------------------------------------------------------- phases */
+.phases{list-style:none;counter-reset:ph;display:grid;gap:16px}
+.phase{background:var(--panneau);border:1px solid var(--ardoise);
+ border-left:3px solid var(--accent);border-radius:6px;padding:18px 22px}
+.phase h2{font-size:1.16rem;margin:4px 0 .4em}
+.phase p{margin:0 0 .4em;color:var(--doux)}
+.phase-n{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,
+ "Liberation Mono",monospace;font-size:.8rem;letter-spacing:.08em;
+ color:var(--accent);text-transform:uppercase}
+.phase-e{font-size:.84rem;color:var(--doux);margin:0}
+
+/* ------------------------------------------------------------ formulaire */
+.formulaire{max-width:44em}
+.champ{display:grid;gap:6px;margin-bottom:20px}
+.champ label{font-weight:600}
+.aide{color:var(--doux);font-size:.9rem}
+input[type=text],select,textarea{font:inherit;font-size:1rem;
+ background:var(--panneau);color:var(--clair);
+ border:1px solid var(--bord);border-radius:5px;padding:11px 13px;
+ width:100%;max-width:100%}
+textarea{resize:vertical;min-height:120px}
+.champ-c{margin-bottom:22px}
+.champ-c label{display:flex;gap:11px;align-items:flex-start;
+ color:var(--doux)}
+.champ-c input{margin-top:.32em;flex:0 0 auto;width:18px;height:18px}
+.btn{display:inline-block;background:var(--accent);color:#04101C;
+ font-weight:650;text-decoration:none;border:0;border-radius:5px;
+ padding:13px 24px;font-size:1rem;cursor:pointer}
+.btn:hover{background:var(--clair);color:var(--nuit)}
+.err{border:1px solid var(--rouge);border-radius:6px;padding:16px 20px;
+ margin-bottom:22px;background:rgba(255,156,143,.08)}
+.err-t{font-weight:650;color:var(--rouge);margin:0 0 .5em}
+.err ul{margin:0;padding-left:20px}
+.err a{color:var(--rouge)}
+.etat{margin-top:16px;color:var(--clair);max-width:48em}
+.champ.faux input,.champ.faux select,.champ.faux textarea{
+ border-color:var(--rouge);border-width:2px}
+
+/* ---------------------------------------------------------------- frise */
+.frise{height:20px;background:url(frise.svg) center/auto 20px repeat-x;
+ opacity:.5;margin:44px 0}
+
+/* ----------------------------------------------------------------- pied */
+.pied{background:var(--panneau);border-top:1px solid var(--ardoise);
+ margin-top:64px}
+.pied .dans{padding-top:38px;padding-bottom:38px}
+.pied-g{display:grid;gap:30px;grid-template-columns:minmax(0,1fr)}
+.pied-n{font-weight:700;margin:10px 0 6px}
+.pied-p{color:var(--doux);font-size:.92rem;max-width:44em}
+.pied-l{list-style:none;display:grid;gap:9px;
+ grid-template-columns:minmax(0,1fr)}
+.pied-l a{color:var(--doux);text-decoration:none;font-size:.94rem}
+.pied-l a:hover{color:var(--clair);text-decoration:underline}
+
+/* ---------------------------------------------------------- aiguillage */
+.aiguillage{display:flex;align-items:center;min-height:100vh;
+ text-align:center}
+.aiguillage .dans{padding-top:40px;padding-bottom:40px}
+.aiguillage h1{margin-top:18px}
+.aig-l{display:flex;gap:14px;justify-content:center;margin-top:26px;
+ flex-wrap:wrap}
+.aiguillage .note{margin:26px auto 0;max-width:38em}
+
+/* ---------------------------------------------------------- bascules */
+@media (min-width:620px){
+ .g3{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .categories{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .item{grid-template-columns:auto minmax(0,1fr);align-items:baseline}
+ .statuts li{grid-template-columns:auto minmax(0,1fr);
+  align-items:baseline}
+ .pied-l{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (min-width:800px){
+ .convention-bloc{grid-template-columns:auto minmax(0,1fr)}
+}
+@media (min-width:960px){
+ .g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .heros-g{grid-template-columns:1.15fr .85fr}
+ .pied-g{grid-template-columns:1fr 1.1fr}
+ .pied-l{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+/* Le menu passe en burger sous 1060 px. La valeur n'est pas ronde par
+   gout : c'est la largeur a laquelle les dix libelles du menu cessent de
+   tenir sur une ligne, mesuree, et non estimee.
+
+   LE REPLI EST CONDITIONNE A `html.js`. Sans JavaScript, rien ne peut
+   rouvrir un menu replie : le bouton n'a pas de gestionnaire, et la
+   navigation serait purement et simplement perdue sur mobile. La classe
+   `js` est posee par le script lui-meme ; tant qu'elle n'est pas la, le
+   menu s'affiche en liste deroulee sous l'en-tete et le bouton reste
+   cache. Le pied de page liste de toute facon les treize pages, donc
+   meme si le script echouait a mi-chemin la navigation resterait
+   complete. */
+@media (max-width:1060px){
+ .js .nav{position:absolute;left:0;right:0;top:100%;
+  background:var(--panneau);
+  border-bottom:1px solid var(--ardoise);display:none;
+  max-height:calc(100vh - var(--entete));overflow-y:auto}
+ .js .nav.ouvert{display:block}
+ .nav{flex:1 1 100%;margin-left:0}
+ .nav ul{flex-direction:column;gap:0;padding:8px 26px 18px}
+ .nav li{border-bottom:1px solid var(--ardoise)}
+ .nav li:last-child{border-bottom:0}
+ .nav a{display:block;padding:13px 0;font-size:1rem}
+ .nav a[aria-current=page]{border-bottom-color:transparent}
+ .js .burger{display:block;margin-left:auto;background:transparent;
+  color:var(--clair);border:1px solid var(--bord);border-radius:5px;
+  padding:9px 15px;font:inherit;font-size:.94rem;cursor:pointer}
+ .entete .dans{position:relative;flex-wrap:wrap}
+ .js .entete .dans{flex-wrap:nowrap}
+}
+@media (max-width:620px){
+ body{font-size:16px}
+ h1{font-size:1.72rem}
+ .heros h1{font-size:1.86rem}
+ h2{font-size:1.3rem}
+ .dans{padding:0 18px}
+ .heros .dans,.titre .dans{padding-top:34px;padding-bottom:34px}
+ main section{margin:38px 0}
+ .util .dans{flex-wrap:wrap;gap:10px}
+ .convention{font-size:.82rem;flex:1 1 100%}
+}
+
+/* Les ancres doivent atterrir SOUS l'en-tete collant, sinon le titre vise
+   passe dessous et le lecteur croit avoir atterri au mauvais endroit. */
+[id]{scroll-margin-top:calc(var(--entete) + 24px)}
+
+@media (prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.001ms!important;
+  transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+
+/* L'impression bascule en fond clair : imprimer un aplat bleu nuit vide
+   une cartouche et rend le texte moins lisible, pas plus. Les etiquettes
+   de statut restent, en noir sur blanc — c'est tout l'interet d'en avoir
+   fait du texte. */
+@media print{
+ body{background:#fff;color:#000;font-size:11pt}
+ body::before,.bandeau,.util,.burger,.nav,.frise,.evitement{display:none}
+ .entete,.heros,.titre,.pied,.carte,.attente,.categories li,.phase,
+ .avert-l,.indicateurs li{background:#fff;color:#000;border-color:#666}
+ a{color:#000;text-decoration:underline}
+ h1,h2,h3,.chapo,.note,.carte p,.attente p,.pied-p,.statuts p{color:#000}
+ .statut,.att{color:#000;border-color:#000;background:#fff}
+ .heros-i,.convention-bloc img{display:none}
+}
